@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import backgroundImage from "../assets/default.jpg";
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -63,7 +65,7 @@ const RegistrationForm = () => {
       );
       console.log("Registration successful", response.data);
       alert("Registration successful");
-      window.location.href = "/profile";
+      window.location.href = "/login";
     } catch (error) {
       console.error("Error:", error);
       setErrors({ form: error.response?.data?.message || "An error occurred" });
@@ -71,11 +73,27 @@ const RegistrationForm = () => {
   };
 
   return (
-    <div className="container-fluid bg-dark vh-100 d-flex align-items-center justify-content-center">
+    <div
+      className="container-fluid bg-dark vh-100 d-flex align-items-center justify-content-center"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundColor: "black",
+      }}
+    >
+      <div className="position-absolute top-0 end-0 p-3">
+        <Link to="/">
+          <button className="btn btn-warning">Back to Home</button>
+        </Link>
+      </div>
       <form
         onSubmit={handleSubmit}
         className="container w-50 border p-5 rounded bg-light"
       >
+        <h1 className="text-center p-3">Register</h1>
+
         <div className="mb-3">
           <label htmlFor="username" className="form-label">
             Username:

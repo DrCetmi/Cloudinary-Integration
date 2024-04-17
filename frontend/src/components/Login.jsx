@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import backgroundImage from "../assets/default.jpg";
 
 function Login() {
   const [loginData, setLoginData] = useState({
@@ -48,11 +50,27 @@ function Login() {
   };
 
   return (
-    <div className="container-fluid bg-dark vh-100 d-flex align-items-center justify-content-center">
+    <div
+      className="container-fluid bg-dark vh-100 d-flex align-items-center justify-content-center"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundColor: "black",
+      }}
+    >
+      <div className="position-absolute top-0 end-0 p-3">
+        <Link to="/">
+          <button className="btn btn-warning">Back to Home</button>
+        </Link>
+      </div>
       <form
         onSubmit={handleSubmit}
         className="container w-50 border p-5 rounded bg-light"
       >
+        <h1 className="text-center p-3">Login</h1>
+
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
             E-mail:
