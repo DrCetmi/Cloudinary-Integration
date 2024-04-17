@@ -11,6 +11,7 @@ import {
   Modal,
   Button,
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const EditUserModal = ({ show, onHide, user, onSave }) => {
   const [editData, setEditData] = useState({ ...user });
@@ -123,6 +124,11 @@ const ProfilePage = () => {
                 <Nav.Link href="#profile">User Profile</Nav.Link>
               </Nav>
             </Navbar>
+            <div className="position-absolute bottom-0 left-0 p-3">
+              <Link to="/">
+                <button className="btn btn-warning">Back to Home</button>
+              </Link>
+            </div>
           </Col>
           <Col md={9}>
             <Container fluid>
@@ -136,7 +142,7 @@ const ProfilePage = () => {
                           user.profilePicture ||
                           "https://via.placeholder.com/200"
                         }
-                        style={{ height: "250px" }}
+                        style={{ width: "100%", height: "300px" }}
                       />
                       <Card.Body>
                         <Card.Title>{user.username}</Card.Title>
