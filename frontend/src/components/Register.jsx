@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import backgroundImage from "../assets/default.jpg";
+import { toast } from "react-toastify";
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const RegistrationForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,17 +60,15 @@ const RegistrationForm = () => {
     try {
       const response = await axios.post(
         "http://localhost:4000/register",
-        formDataToSend,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+        formDataToSend
       );
       console.log("Registration successful", response.data);
-      alert("Registration successful");
-      window.location.href = "/login";
+      toast.success("Registration successful");
+      navigate("/login");
     } catch (error) {
       console.error("Error:", error);
       setErrors({ form: error.response?.data?.message || "An error occurred" });
+      toast.error("Registration failed");
     }
   };
 

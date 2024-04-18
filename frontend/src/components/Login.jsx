@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import backgroundImage from "../assets/default.jpg";
+import { toast } from "react-toastify";
 
 function Login() {
   const [loginData, setLoginData] = useState({
@@ -9,6 +10,7 @@ function Login() {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,12 +42,13 @@ function Login() {
       );
       localStorage.setItem("token", response.data.token);
       console.log("Login successful", response.data);
-      alert("Login successful");
-      window.location.href = "/profile";
+      toast.success("Login successful");
+      navigate("/profile");
     } catch (error) {
       console.error("Error:", error);
       const errorMsg = error.response?.data?.message || "Login failed";
       setErrors({ server: errorMsg });
+      toast.error("Login failed");
     }
   };
 

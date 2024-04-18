@@ -11,7 +11,8 @@ import {
   Modal,
   Button,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const EditUserModal = ({ show, onHide, user, onSave }) => {
   const [editData, setEditData] = useState({ ...user });
@@ -72,6 +73,7 @@ const EditUserModal = ({ show, onHide, user, onSave }) => {
 const ProfilePage = () => {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -112,6 +114,12 @@ const ProfilePage = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    toast.info("Logged out successfully");
+    navigate("/login");
+  };
+
   return (
     <>
       <Container fluid>
@@ -124,10 +132,13 @@ const ProfilePage = () => {
                 <Nav.Link href="#profile">User Profile</Nav.Link>
               </Nav>
             </Navbar>
-            <div className="position-absolute bottom-0 left-0 p-3">
+            <div className="position-absolute bottom-0 left-0 p-2 d-flex flex-column align-items-center justify-content-center">
               <Link to="/">
                 <button className="btn btn-warning">Back to Home</button>
               </Link>
+              <button className="btn btn-danger mt-2" onClick={handleLogout}>
+                Log Out
+              </button>
             </div>
           </Col>
           <Col md={9}>

@@ -2,18 +2,52 @@ import User from "../models/usersSchema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-export const register = async (req, res) => {
+export async function getAllUsers(req, res) {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ message: "Fetching users failed" });
+  }
+}
+
+export async function updateUser(req, res) {
+  try {
+    const { id } = req.params;
+    const update = req.body;
+    const updatedUser = await User.findByIdAndUpdate(id, update, { new: true });
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "User update failed" });
+  }
+}
+
+export async function deleteUser(req, res) {
+  try {
+    const { id } = req.params;
+    await User.findByIdAndDelete(id);
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "User deletion failed" });
+  }
+}
+
+export async function registerUser(req, res) {
   try {
     const { username, email, password } = req.body;
-
     if (!password) {
       return res.status(400).send({ message: "Password is required" });
     }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
       username,
       email,
-      password,
+      password: hashedPassword,
       profilePicture: req.file.path,
     });
     await newUser.save();
@@ -25,9 +59,9 @@ export const register = async (req, res) => {
       .status(500)
       .json({ message: "User creation failed", error: error.message });
   }
-};
+}
 
-export const login = async (req, res) => {
+export async function loginUser(req, res) {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -41,4 +75,4 @@ export const login = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Login failed" });
   }
-};
+}
