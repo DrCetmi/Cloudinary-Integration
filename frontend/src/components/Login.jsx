@@ -42,8 +42,9 @@ function Login() {
       );
       localStorage.setItem("token", response.data.token);
       console.log("Login successful", response.data);
-      toast.success("Login successful");
-      navigate("/profile");
+      toast.success("Login successful", {
+        onClose: () => navigate("/profile"),
+      });
     } catch (error) {
       console.error("Error:", error);
       const errorMsg = error.response?.data?.message || "Login failed";

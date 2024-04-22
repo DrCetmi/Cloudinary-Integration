@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Container,
   Row,
   Col,
-  Form,
-  Card,
-  Nav,
   Navbar,
-  Modal,
+  Nav,
+  Table,
   Button,
+  Modal,
+  Form,
+  Image,
 } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const EditUserModal = ({ show, onHide, user, onSave }) => {
@@ -95,8 +97,10 @@ const ProfilePage = () => {
     try {
       await axios.delete(`http://localhost:4000/users/${userId}`);
       setUsers(users.filter((user) => user._id !== userId));
+      toast.info("User deleted successfully");
     } catch (error) {
       console.error("Error deleting user:", error);
+      toast.error("Failed to delete user");
     }
   };
 
@@ -109,8 +113,12 @@ const ProfilePage = () => {
       setUsers(
         users.map((user) => (user._id === userData._id ? response.data : user))
       );
+      toast.success("User updated successfully");
     } catch (error) {
       console.error("Error updating user:", error);
+      toast.error("Failed to update user", {
+        onClose: () => navigate("/login"),
+      });
     }
   };
 
@@ -141,42 +149,51 @@ const ProfilePage = () => {
               </button>
             </div>
           </Col>
-          <Col md={9}>
-            <Container fluid>
-              <Row>
+          <Col md={9} className="mt-5">
+            <Table striped bordered hover responsive>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Photo</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
                 {users.map((user, index) => (
-                  <Col key={index} md={4} className="my-3">
-                    <Card>
-                      <Card.Img
-                        variant="top"
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>
+                      <Image
                         src={
                           user.profilePicture ||
                           "https://via.placeholder.com/200"
                         }
-                        style={{ width: "100%", height: "300px" }}
+                        rounded
+                        style={{ width: "50px", height: "50px" }}
                       />
-                      <Card.Body>
-                        <Card.Title>{user.username}</Card.Title>
-                        <Card.Text>{user.email}</Card.Text>
-                        <Button
-                          variant="primary"
-                          onClick={() => handleEdit(user)}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="danger"
-                          onClick={() => handleDelete(user._id)}
-                          className="ms-2"
-                        >
-                          Delete
-                        </Button>
-                      </Card.Body>
-                    </Card>
-                  </Col>
+                    </td>
+                    <td>{user.username}</td>
+                    <td>{user.email}</td>
+                    <td>
+                      <Button
+                        variant="primary"
+                        onClick={() => handleEdit(user)}
+                      >
+                        Edit
+                      </Button>{" "}
+                      <Button
+                        variant="danger"
+                        onClick={() => handleDelete(user._id)}
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
                 ))}
-              </Row>
-            </Container>
+              </tbody>
+            </Table>
           </Col>
         </Row>
       </Container>

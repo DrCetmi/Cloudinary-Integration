@@ -63,8 +63,9 @@ const RegistrationForm = () => {
         formDataToSend
       );
       console.log("Registration successful", response.data);
-      toast.success("Registration successful");
-      navigate("/login");
+      toast.success("Registration successful", {
+        onClose: () => navigate("/login"),
+      });
     } catch (error) {
       console.error("Error:", error);
       setErrors({ form: error.response?.data?.message || "An error occurred" });
