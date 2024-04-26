@@ -59,7 +59,7 @@ const RegistrationForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/register",
+        "https://cloudinary-integration.onrender.com/register",
         formDataToSend
       );
       console.log("Registration successful", response.data);
