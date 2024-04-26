@@ -80,9 +80,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(
-          "https://cloudinary-integration.onrender.com/users"
-        );
+        const response = await axios.get("http://localhost:4000/users");
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -97,9 +95,7 @@ const ProfilePage = () => {
 
   const handleDelete = async (userId) => {
     try {
-      await axios.delete(
-        `https://cloudinary-integration.onrender.com/users/${userId}`
-      );
+      await axios.delete(`http://localhost:4000/users/${userId}`);
       setUsers(users.filter((user) => user._id !== userId));
       toast.info("User deleted successfully");
     } catch (error) {
@@ -111,7 +107,7 @@ const ProfilePage = () => {
   const handleSave = async (userData) => {
     try {
       const response = await axios.put(
-        `https://cloudinary-integration.onrender.com/users/${userData._id}`,
+        `http://localhost:4000/users/${userData._id}`,
         userData
       );
       setUsers(

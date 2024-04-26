@@ -37,7 +37,7 @@ function Login() {
     }
     try {
       const response = await axios.post(
-        "https://cloudinary-integration.onrender.com/login",
+        "http://localhost:4000/login",
         loginData
       );
       localStorage.setItem("token", response.data.token);

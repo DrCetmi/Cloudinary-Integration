@@ -32,7 +32,7 @@ const port = process.env.PORT || 8001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: "https://cloudinary-integration.vercel.app" }));
+app.use(cors({ origin: "http://localhost:5173" }));
 
 app.get("/users", async (req, res) => {
   try {
